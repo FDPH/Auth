@@ -3,6 +3,8 @@ package com.fdapp.auth.adapter.out.persistence;
 import com.fdapp.auth.adapter.out.persistence.entity.UserEntity;
 import com.fdapp.auth.adapter.out.persistence.repository.UserRepository;
 import com.fdapp.auth.application.port.out.UserRepositoryPort;
+import com.fdapp.auth.domain.Email;
+import com.fdapp.auth.domain.Password;
 import com.fdapp.auth.domain.User;
 import org.springframework.stereotype.Repository;
 
@@ -28,19 +30,28 @@ public class JpaUserRegisterRepositoryAdapter implements UserRepositoryPort {
     @Override
     public User getUserByUserName(String username) {
         UserEntity userByUsername = userRepository.findByUserName(username);
-        return new User(userByUsername.getUserName(), userByUsername.getUserPassword(), userByUsername.getUserEmail());
+        return new User(userByUsername.getUserName(),
+                new Password(userByUsername.getUserPassword()),
+                new Email(userByUsername.getUserEmail()));
     }
 
     @Override
     public User getUserByEmail(String email) {
         UserEntity userByEmail = userRepository.findByUserEmail(email);
-        return new User(userByEmail.getUserName(), userByEmail.getUserPassword(), userByEmail.getUserEmail());
+        return new User(userByEmail.getUserName(),
+                new Password(userByEmail.getUserPassword()),
+                new Email(userByEmail.getUserEmail()));
     }
 
     @Override
     public User saveUser(User user) {
-        UserEntity save = userRepository.save(new UserEntity(user.getUsername(), user.getPassword(), user.getEmail()));
-        return new User(save.getUserName(), save.getUserPassword(), save.getUserEmail());
+        UserEntity save = userRepository.save(new UserEntity(user.getUsername(),
+                user.getPassword().value(),
+                user.getEmail().value()));
+
+        return new User(save.getUserName(),
+                new Password(save.getUserPassword()),
+                new Email(save.getUserEmail()));
     }
 
     @Override

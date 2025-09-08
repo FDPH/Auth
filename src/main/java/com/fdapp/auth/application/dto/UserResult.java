@@ -1,6 +1,6 @@
 package com.fdapp.auth.application.dto;
 
-public record UserRegisteredResult(
+public record UserResult(
         String userName,
         String email,
         String token,

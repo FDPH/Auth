@@ -1,8 +1,8 @@
-package com.fdapp.auth.infraestructure.exception;
+package com.fdapp.auth.application.dto;
 
 import java.net.URI;
 
-public record ErrorDetails(
+public record ProblemDetails(
         URI type,
         String title,
         int status,

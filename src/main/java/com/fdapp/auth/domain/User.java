@@ -4,10 +4,10 @@ import com.fdapp.auth.domain.exception.UserValuesException;
 
 public class User {
     private final String username;
-    private final String password;
-    private final String email;
+    private final Password password;
+    private final Email email;
 
-    public User(String username, String password, String email) {
+    public User(String username, Password password, Email email) {
         this.username = validateUserName(username);
         this.password = password;
         this.email = email;
@@ -24,11 +24,11 @@ public class User {
         return username;
     }
 
-    public String getPassword() {
+    public Password getPassword() {
         return password;
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 }

@@ -3,6 +3,7 @@ package com.fdapp.auth.adapter.inbound.controllers;
 import com.fdapp.auth.adapter.inbound.dto.request.LoginRequest;
 import com.fdapp.auth.adapter.inbound.dto.request.RegisterRequest;
 import com.fdapp.auth.application.dto.UserRegisterCommand;
+import com.fdapp.auth.application.dto.UserResult;
 import com.fdapp.auth.application.port.in.UserUseCase;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +23,10 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<UserResult> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         log.debug("register resource is running");
         UserRegisterCommand userRegisterCommand = new UserRegisterCommand(registerRequest.username(),registerRequest.email(),registerRequest.password());
-        userUseCase.saveUser(userRegisterCommand);
-        return ResponseEntity.status(HttpStatus.OK).body("aqui estamos");
+        return ResponseEntity.status(HttpStatus.OK).body(userUseCase.saveUser(userRegisterCommand));
     }
 
     @GetMapping("/Login")
