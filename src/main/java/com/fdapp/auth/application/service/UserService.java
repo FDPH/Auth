@@ -3,8 +3,11 @@ package com.fdapp.auth.application.service;
 import com.fdapp.auth.application.dto.UserRegisterCommand;
 import com.fdapp.auth.application.dto.UserResult;
 import com.fdapp.auth.application.exception.UserAlreadyExistsException;
+import com.fdapp.auth.application.port.in.LoginUseCase;
 import com.fdapp.auth.application.port.in.UserUseCase;
 import com.fdapp.auth.application.port.out.TokenProviderPort;
+import com.fdapp.auth.application.port.out.UserCommandPort;
+import com.fdapp.auth.application.port.out.UserQueryPort;
 import com.fdapp.auth.application.port.out.UserRepositoryPort;
 import com.fdapp.auth.domain.Email;
 import com.fdapp.auth.domain.Password;
@@ -17,11 +20,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserService implements UserUseCase {
 
-    private final UserRepositoryPort userRepositoryPort;
+    private final UserCommandPort userCommandPort;
+    private final UserQueryPort userQueryPort;
     private final TokenProviderPort tokenProviderPort;
 
-    public UserService(UserRepositoryPort userRepositoryPort, TokenProviderPort tokenProviderPort) {
-        this.userRepositoryPort = userRepositoryPort;
+    public UserService(UserCommandPort userCommandPort, UserQueryPort userQueryPort, TokenProviderPort tokenProviderPort) {
+        this.userCommandPort = userCommandPort;
+        this.userQueryPort = userQueryPort;
         this.tokenProviderPort = tokenProviderPort;
     }
 
@@ -34,13 +39,13 @@ public class UserService implements UserUseCase {
                 new Password(userData.password()),
                 new Email(userData.email()));
 
-        if (userRepositoryPort.existsUserByUsername(userData.username())
-                || userRepositoryPort.existsUserByEmail(userData.email())) {
+        if (userQueryPort.existsUserByUsername(userData.username())
+                || userQueryPort.existsUserByEmail(userData.email())) {
             log.info("User {} or email {} already exists", userData.username(), userData.email());
             throw new UserAlreadyExistsException("The username or email already exists in our system");
         }
 
-        User userSaved = userRepositoryPort.saveUser(userForRepository);
+        User userSaved = userCommandPort.saveUser(userForRepository);
         log.info("User registered successfully");
         return new UserResult(userSaved.getUsername(), userSaved.getEmail().value(), "123", true);
     }
