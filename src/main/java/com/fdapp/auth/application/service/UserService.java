@@ -2,16 +2,16 @@ package com.fdapp.auth.application.service;
 
 import com.fdapp.auth.application.dto.UserRegisterCommand;
 import com.fdapp.auth.application.dto.UserResult;
-import com.fdapp.auth.application.exception.UserAlreadyExistsException;
-import com.fdapp.auth.application.port.in.LoginUseCase;
+import com.fdapp.auth.domain.exception.UserAlreadyExistsException;
 import com.fdapp.auth.application.port.in.UserUseCase;
 import com.fdapp.auth.application.port.out.TokenProviderPort;
 import com.fdapp.auth.application.port.out.UserCommandPort;
 import com.fdapp.auth.application.port.out.UserQueryPort;
-import com.fdapp.auth.application.port.out.UserRepositoryPort;
 import com.fdapp.auth.domain.Email;
 import com.fdapp.auth.domain.Password;
 import com.fdapp.auth.domain.User;
+import com.fdapp.auth.domain.service.UserFinder;
+import com.fdapp.auth.domain.service.UserValidator;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,30 +20,26 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserService implements UserUseCase {
 
+    private final UserValidator userValidator;
     private final UserCommandPort userCommandPort;
-    private final UserQueryPort userQueryPort;
-    private final TokenProviderPort tokenProviderPort;
 
-    public UserService(UserCommandPort userCommandPort, UserQueryPort userQueryPort, TokenProviderPort tokenProviderPort) {
+    public UserService(UserValidator userValidator, UserCommandPort userCommandPort) {
+        this.userValidator = userValidator;
         this.userCommandPort = userCommandPort;
-        this.userQueryPort = userQueryPort;
-        this.tokenProviderPort = tokenProviderPort;
     }
 
     @Override
     @Transactional
     public UserResult saveUser(UserRegisterCommand userData) {
         log.info("Checking the user information");
+        log.info("Validating business rules");
+
+        userValidator.assertUsernameIsUnique(userData.username());
+        userValidator.assertEmailIsUnique(userData.email());
 
         User userForRepository = new User(userData.username(),
                 new Password(userData.password()),
                 new Email(userData.email()));
-
-        if (userQueryPort.existsUserByUsername(userData.username())
-                || userQueryPort.existsUserByEmail(userData.email())) {
-            log.info("User {} or email {} already exists", userData.username(), userData.email());
-            throw new UserAlreadyExistsException("The username or email already exists in our system");
-        }
 
         User userSaved = userCommandPort.saveUser(userForRepository);
         log.info("User registered successfully");

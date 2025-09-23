@@ -17,6 +17,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/auth/public-hola").permitAll()
                         .requestMatchers("/auth/register").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/private-hola").authenticated()
                         .anyRequest().fullyAuthenticated()
                 )

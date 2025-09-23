@@ -2,8 +2,10 @@ package com.fdapp.auth.adapter.inbound.controllers;
 
 import com.fdapp.auth.adapter.inbound.dto.request.LoginRequest;
 import com.fdapp.auth.adapter.inbound.dto.request.RegisterRequest;
+import com.fdapp.auth.application.dto.UserLoginCommand;
 import com.fdapp.auth.application.dto.UserRegisterCommand;
 import com.fdapp.auth.application.dto.UserResult;
+import com.fdapp.auth.application.port.in.LoginUseCase;
 import com.fdapp.auth.application.port.in.UserUseCase;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final UserUseCase userUseCase;
+    private final LoginUseCase loginUseCase;
 
-    public AuthController(UserUseCase userUseCase) {
+    public AuthController(UserUseCase userUseCase, LoginUseCase loginUseCase) {
         this.userUseCase = userUseCase;
+        this.loginUseCase = loginUseCase;
     }
 
     @PostMapping("/register")
@@ -29,21 +33,22 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(userUseCase.saveUser(userRegisterCommand));
     }
 
-    @GetMapping("/Login")
+    @GetMapping("/login")
     public ResponseEntity<String> registerUser(@RequestBody LoginRequest loginRequest){
-        System.out.println("aqui estamos");
-        return ResponseEntity.status(HttpStatus.OK).body("aqui estamos");
+        log.debug("login resource is running");
+        UserLoginCommand userLoginCommand = new UserLoginCommand(loginRequest.username(),loginRequest.email(), loginRequest.password());
+        return ResponseEntity.status(HttpStatus.OK).body(loginUseCase.login(userLoginCommand));
     }
 
     @GetMapping("/private-hola")
     public ResponseEntity<String> printPrivateHola(){
-        System.out.println("private-hola");
+        log.info("private hola");
         return ResponseEntity.status(HttpStatus.OK).body("private-hola");
     }
 
     @GetMapping("/public-hola")
     public ResponseEntity<String> printPublicHola(){
-        System.out.println("public-hola");
+       log.info("public hola");
         return ResponseEntity.status(HttpStatus.OK).body("public-hola");
     }
 }

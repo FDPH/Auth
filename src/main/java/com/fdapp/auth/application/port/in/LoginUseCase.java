@@ -1,5 +1,7 @@
 package com.fdapp.auth.application.port.in;
 
+import com.fdapp.auth.application.dto.UserLoginCommand;
+
 public interface LoginUseCase {
-    public boolean isPasswordCorrect(String userName, String password);
+   String login(UserLoginCommand userLoginCommand);
 }

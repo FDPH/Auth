@@ -1,8 +1,10 @@
 package com.fdapp.auth.adapter.inbound.controllers;
 
-import com.fdapp.auth.application.exception.UserAlreadyExistsException;
+import com.fdapp.auth.domain.exception.EmailAlreadyUsedException;
+import com.fdapp.auth.domain.exception.UserAlreadyExistsException;
 import com.fdapp.auth.domain.exception.EmailException;
 import com.fdapp.auth.domain.exception.PasswordException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +15,28 @@ import java.net.URI;
 import java.util.Map;
 
 @RestControllerAdvice
+@Slf4j
 public class UserExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ProblemDetail> handleUserAlreadyExistsException(UserAlreadyExistsException userAlreadyExistsException) {
+        log.error(userAlreadyExistsException.getMessage(), userAlreadyExistsException);
         ProblemDetail problemDetail =
                 ProblemDetail.forStatus(HttpStatus.CONFLICT);
         problemDetail.setTitle("User Already Exists");
         problemDetail.setType(URI.create("https://fdpapp.com/docs/errors/user-already-exist"));
         problemDetail.setDetail(userAlreadyExistsException.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(problemDetail);
+    }
+
+    @ExceptionHandler(EmailAlreadyUsedException.class)
+    public ResponseEntity<ProblemDetail> handleEmailAlreadyUsedException(EmailAlreadyUsedException emailAlreadyUsedException) {
+        log.error(emailAlreadyUsedException.getMessage(), emailAlreadyUsedException);
+        ProblemDetail problemDetail =
+                ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problemDetail.setTitle("Email Already Used");
+        problemDetail.setType(URI.create("https://fdpapp.com/docs/errors/email-already-used"));
+        problemDetail.setDetail(emailAlreadyUsedException.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(problemDetail);
     }
 
