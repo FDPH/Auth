@@ -1,11 +1,11 @@
-package com.fdapp.auth.application.port.out;
+package com.fdapp.auth.domain.port;
 
 import com.fdapp.auth.domain.User;
 
 import java.util.Optional;
 
 /*
- * Answering the question "WHAT will you be able to do?"
+ * Answering the question "WHAT do you need to do your core tasks"
  * */
 public interface UserQueryPort {
     boolean existsUserByEmail(String email);

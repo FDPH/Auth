@@ -1,4 +1,4 @@
-package com.fdapp.auth.application.port.out;
+package com.fdapp.auth.application.port;
 
 public interface TokenProviderPort {
     String generateToken(String userName);

@@ -2,7 +2,7 @@ package com.fdapp.auth.adapter.out.persistence;
 
 import com.fdapp.auth.adapter.out.persistence.entity.UserEntity;
 import com.fdapp.auth.adapter.out.persistence.repository.UserRepository;
-import com.fdapp.auth.application.port.out.UserCommandPort;
+import com.fdapp.auth.domain.port.UserCommandPort;
 import com.fdapp.auth.domain.Email;
 import com.fdapp.auth.domain.Password;
 import com.fdapp.auth.domain.User;

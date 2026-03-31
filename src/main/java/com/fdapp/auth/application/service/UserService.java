@@ -2,15 +2,11 @@ package com.fdapp.auth.application.service;
 
 import com.fdapp.auth.application.dto.UserRegisterCommand;
 import com.fdapp.auth.application.dto.UserResult;
-import com.fdapp.auth.domain.exception.UserAlreadyExistsException;
-import com.fdapp.auth.application.port.in.UserUseCase;
-import com.fdapp.auth.application.port.out.TokenProviderPort;
-import com.fdapp.auth.application.port.out.UserCommandPort;
-import com.fdapp.auth.application.port.out.UserQueryPort;
+import com.fdapp.auth.application.usecase.UserUseCase;
+import com.fdapp.auth.domain.port.UserCommandPort;
 import com.fdapp.auth.domain.Email;
 import com.fdapp.auth.domain.Password;
 import com.fdapp.auth.domain.User;
-import com.fdapp.auth.domain.service.UserFinder;
 import com.fdapp.auth.domain.service.UserValidator;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;

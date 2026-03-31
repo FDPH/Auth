@@ -1,8 +1,8 @@
 package com.fdapp.auth.application.service;
 
 import com.fdapp.auth.application.dto.UserLoginCommand;
-import com.fdapp.auth.application.port.in.LoginUseCase;
-import com.fdapp.auth.application.port.out.TokenProviderPort;
+import com.fdapp.auth.application.usecase.LoginUseCase;
+import com.fdapp.auth.application.port.TokenProviderPort;
 import com.fdapp.auth.domain.User;
 import com.fdapp.auth.domain.service.PasswordValidator;
 import com.fdapp.auth.domain.service.UserFinder;

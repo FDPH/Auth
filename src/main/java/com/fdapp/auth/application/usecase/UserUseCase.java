@@ -1,4 +1,4 @@
-package com.fdapp.auth.application.port.in;
+package com.fdapp.auth.application.usecase;
 
 import com.fdapp.auth.application.dto.UserRegisterCommand;
 import com.fdapp.auth.application.dto.UserResult;

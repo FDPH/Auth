@@ -1,6 +1,6 @@
 package com.fdapp.auth.adapter.out.external;
 
-import com.fdapp.auth.application.port.out.TokenProviderPort;
+import com.fdapp.auth.application.port.TokenProviderPort;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

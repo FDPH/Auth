@@ -1,6 +1,6 @@
 package com.fdapp.auth.domain.service;
 
-import com.fdapp.auth.application.port.out.UserQueryPort;
+import com.fdapp.auth.domain.port.UserQueryPort;
 import com.fdapp.auth.domain.exception.EmailAlreadyUsedException;
 import com.fdapp.auth.domain.exception.UserAlreadyExistsException;
 import org.springframework.stereotype.Service;

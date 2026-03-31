@@ -1,6 +1,6 @@
 package com.fdapp.auth.domain.service;
 
-import com.fdapp.auth.application.port.out.UserQueryPort;
+import com.fdapp.auth.domain.port.UserQueryPort;
 import com.fdapp.auth.domain.User;
 import com.fdapp.auth.domain.exception.UserDoNotExistByEmail;
 import com.fdapp.auth.domain.exception.UserDoNotExistByUserName;

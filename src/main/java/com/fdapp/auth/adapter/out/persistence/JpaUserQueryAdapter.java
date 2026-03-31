@@ -1,7 +1,7 @@
 package com.fdapp.auth.adapter.out.persistence;
 
 import com.fdapp.auth.adapter.out.persistence.repository.UserRepository;
-import com.fdapp.auth.application.port.out.UserQueryPort;
+import com.fdapp.auth.domain.port.UserQueryPort;
 import com.fdapp.auth.domain.Email;
 import com.fdapp.auth.domain.Password;
 import com.fdapp.auth.domain.User;
